@@ -1,7 +1,8 @@
-package ru.graphorismo.simplealarm
+package ru.graphorismo.simplealarm.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import ru.graphorismo.simplealarm.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
