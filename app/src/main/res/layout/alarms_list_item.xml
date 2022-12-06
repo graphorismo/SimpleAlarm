@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:elevation="5dp"
+    app:cardCornerRadius="5dp"
+    android:padding="5dp"
+    android:layout_margin="5dp"
+    android:backgroundTint="@color/teal_700">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:background="@color/teal_200"
+        android:padding="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.2"
+            >
+
+            <TextView
+                android:id="@+id/alarmListItem_textView_dateText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="DATE"
+                android:textSize="16dp"
+                android:textColor="@color/black"
+                />
+
+            <TextView
+                android:id="@+id/alarmListItem_textView_timeText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:text="TIME"
+                android:textSize="16dp"
+                android:textColor="@color/black"
+                />
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/alarmListItem_imageButton_deleteButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:src="@drawable/ic_baseline_clear_24"
+            android:background="@color/teal_700"
+            android:scaleType="centerCrop"
+            />
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
