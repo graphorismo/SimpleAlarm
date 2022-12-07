@@ -12,11 +12,13 @@ import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.datepicker.MaterialDatePicker
 import ru.graphorismo.simplealarm.R
 import ru.graphorismo.simplealarm.domain.Alarm
+import ru.graphorismo.simplealarm.domain.MainUiEvent
 import java.util.*
 
 
@@ -24,6 +26,8 @@ class MainActivity : AppCompatActivity(),
     DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener
 {
+
+    val viewModel: MainViewModel by viewModels()
 
     lateinit var addAlarmButton: Button
     lateinit var settedAlarm: Alarm
@@ -75,5 +79,8 @@ class MainActivity : AppCompatActivity(),
     override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
         settedAlarm = settedAlarm.copy(hour = hour, minute = minute)
         Log.d("TIME_PICK", "Set time h:${settedAlarm.hour} m:${settedAlarm.minute}")
+
+        viewModel.onMainUiEvent(MainUiEvent.NewAlarmAdd(settedAlarm))
+
     }
 }
