@@ -23,6 +23,13 @@ class MainViewModel: ViewModel() {
                 mainUiStateFlow.value = MainUiState(newAlarmsList.toList())
                 Log.d("MAIN_UI_EVENT","Handle new alarm event. Current size of alarm lists: ${newAlarmsList.size}")
             }
+            is MainUiEvent.AlarmRemove -> {
+                val oldAlarmsList = mainUiStateFlow.value.alarmsList
+                val newAlarmsList = oldAlarmsList.toMutableList()
+                newAlarmsList.removeAt(mainUiEvent.index)
+                mainUiStateFlow.value = MainUiState(newAlarmsList.toList())
+                Log.d("MAIN_UI_EVENT","Handle remove alarm event. Current size of alarm lists: ${newAlarmsList.size}")
+            }
         }
     }
 }

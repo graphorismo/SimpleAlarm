@@ -15,7 +15,13 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
+import kotlinx.coroutines.launch
 import ru.graphorismo.simplealarm.R
 import ru.graphorismo.simplealarm.domain.Alarm
 import ru.graphorismo.simplealarm.domain.MainUiEvent
@@ -30,12 +36,46 @@ class MainActivity : AppCompatActivity(),
     val viewModel: MainViewModel by viewModels()
 
     lateinit var addAlarmButton: Button
+
+    lateinit var alarmsListRecyclerView: RecyclerView
+    lateinit var alarmsListRecyclerAdapter: AlarmsListRecyclerAdapter
+
     lateinit var settedAlarm: Alarm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setDefaultSettedAlarm()
+
+        addAlarmButton = findViewById(R.id.activityMain_button_addAlarm)
+        alarmsListRecyclerView = findViewById(R.id.activityMain_recyclerView_alarmsList)
+
+        addAlarmButton.setOnClickListener {
+            showTimePicker()
+            showDatePicker()
+            //new alarm event trigger on the datePicker close
+        }
+
+        alarmsListRecyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        alarmsListRecyclerAdapter = AlarmsListRecyclerAdapter(viewModel)
+        alarmsListRecyclerView.adapter = alarmsListRecyclerAdapter
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.mainUiStateFlow.collect { uiState ->
+                    alarmsListRecyclerAdapter.data = uiState.alarmsList.toMutableList()
+                    alarmsListRecyclerAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
+
+
+    }
+
+    private fun setDefaultSettedAlarm(){
         val calendar = Calendar.getInstance()
         settedAlarm =
             Alarm(year = calendar.get(Calendar.YEAR),
@@ -44,12 +84,6 @@ class MainActivity : AppCompatActivity(),
                 hour = calendar.get(Calendar.HOUR_OF_DAY),
                 minute = calendar.get(Calendar.MINUTE)
             )
-
-        addAlarmButton = findViewById<Button>(R.id.activityMain_button_addAlarm)
-        addAlarmButton.setOnClickListener {
-            showTimePicker()
-            showDatePicker()
-        }
     }
 
     private fun showDatePicker(){
