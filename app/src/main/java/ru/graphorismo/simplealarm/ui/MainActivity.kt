@@ -1,33 +1,28 @@
 package ru.graphorismo.simplealarm.ui
 
-import android.app.AlarmManager
-import android.app.AlarmManager.AlarmClockInfo
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TimePicker
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.datepicker.MaterialDatePicker
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import ru.graphorismo.simplealarm.R
 import ru.graphorismo.simplealarm.domain.Alarm
 import ru.graphorismo.simplealarm.domain.MainUiEvent
 import java.util.*
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(),
     DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener
@@ -47,6 +42,8 @@ class MainActivity : AppCompatActivity(),
         setContentView(R.layout.activity_main)
 
         setDefaultSettedAlarm()
+
+        viewModel.onMainUiEvent(MainUiEvent.MainUiLoad)
 
         addAlarmButton = findViewById(R.id.activityMain_button_addAlarm)
         alarmsListRecyclerView = findViewById(R.id.activityMain_recyclerView_alarmsList)
